@@ -22,10 +22,10 @@ public class DemoCallApiApplication {
 	public static void main(String[] args) throws ClientProtocolException, IOException {
 		SpringApplication.run(DemoCallApiApplication.class, args);
 
-		final String URL = "https://ncov.trungbt.xyz/countries";
-		Response response = Request.Get(URL).execute();
-
-		String json = response.returnContent().toString();
+//		final String URL = "https://ncov.trungbt.xyz/countries";
+//		Response response = Request.Get(URL).execute();
+//
+//		String json = response.returnContent().toString();
 		
 		//json simple
 //		List<Country> countries = new LinkedList<Country>();
