@@ -4,7 +4,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,7 +32,7 @@ public class ProvinceController {
 	
 	@GetMapping
 	public ResponseEntity<?> getAllProvinces(){
-		List<Province> provinces = provinceRepository.findAll();
+		List<Province> provinces = provinceRepository.findAll(Sort.by("code"));
 		return ResponseEntity.status(200).body(provinces);
 	}
 	
@@ -51,6 +53,7 @@ public class ProvinceController {
 		return ResponseEntity.status(201).body(newProvince);
 	}
 	
+	@Transactional
 	@PostMapping("/province-collection")
 	public ResponseEntity<?> createNewProvince(@RequestBody List<ProvinceDTO> listProvinceDTOs){
 		List<Province> provinceDAOs = new LinkedList<Province>();
