@@ -29,49 +29,50 @@ public class ProvinceController {
 
 	@Autowired
 	private ProvinceRepository provinceRepository;
-	
+
 	@GetMapping
-	public ResponseEntity<?> getAllProvinces(){
+	public ResponseEntity<?> getAllProvinces() {
 		List<Province> provinces = provinceRepository.findAll(Sort.by("code"));
 		return ResponseEntity.status(200).body(provinces);
 	}
-	
+
 	@GetMapping("/{code}")
-	public ResponseEntity<?> getProvinceByCode(@PathVariable("code") Integer code){
+	public ResponseEntity<?> getProvinceByCode(@PathVariable("code") Integer code) {
 		Province province = provinceRepository.findByCode(code);
 		return ResponseEntity.status(200).body(province);
 	}
-	
+
 	@PostMapping
-	public ResponseEntity<?> createNewProvince(@RequestBody ProvinceDTO provinceDTO){
+	public ResponseEntity<?> createNewProvince(@RequestBody ProvinceDTO provinceDTO) {
 		Province oldProvince = provinceRepository.findByCode(provinceDTO.getCode());
-		if(oldProvince != null) {
+		if (oldProvince != null) {
 			throw new DuplicateException("Province has ready exists");
 		}
 		Province province = ConvertObject.fromProvinceDTOToProvinceDAO(provinceDTO);
 		Province newProvince = provinceRepository.save(province);
 		return ResponseEntity.status(201).body(newProvince);
 	}
-	
+
 	@Transactional
 	@PostMapping("/province-collection")
-	public ResponseEntity<?> createNewProvince(@RequestBody List<ProvinceDTO> listProvinceDTOs){
+	public ResponseEntity<?> createNewProvince(@RequestBody List<ProvinceDTO> listProvinceDTOs) {
 		List<Province> provinceDAOs = new LinkedList<Province>();
-		
+
 		for (int i = 0; i < listProvinceDTOs.size(); i++) {
 			Province province = new Province();
 			province = ConvertObject.fromProvinceDTOToProvinceDAO(listProvinceDTOs.get(i));
 			provinceDAOs.add(province);
 		}
-		
+
 		List<Province> newProvinces = provinceRepository.saveAll(provinceDAOs);
-		
+
 		return ResponseEntity.status(201).body(newProvinces);
 	}
-	
+
 	@GetMapping("/{code}/districts")
-	public ResponseEntity<?> getDistrictByProvince(@PathVariable("code") Integer code){
+	public ResponseEntity<?> getDistrictByProvince(@PathVariable("code") Integer code) {
 		Province province = provinceRepository.findByCode(code);
 		return ResponseEntity.status(200).body(province.getDistricts());
 	}
+
 }
