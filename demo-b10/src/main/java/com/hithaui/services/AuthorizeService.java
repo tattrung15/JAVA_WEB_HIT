@@ -5,6 +5,12 @@ import org.springframework.stereotype.Service;
 
 @Service("authorizeService")
 public class AuthorizeService {
+	
+	public Boolean checkAuth(Authentication authentication, String role, Long userId) {
+		System.out.println(role);
+		System.out.println(userId);
+		return true;
+	}
 
 	public Boolean checkAdmin(Authentication authentication, String role) {
 		if(authentication.getAuthorities().toArray()[0].toString().compareTo(role) == 0) {
